@@ -1,0 +1,13 @@
+.button-style{
+    padding: 1rem 0.6rem 1rem 0.6rem;
+    border-radius: 0.8rem;
+    font-size: medium;
+    cursor: pointer;
+    background-color: rgb(80,200,120);
+    color: white;
+    border: 2px solid green;
+    box-shadow: 3px 3px 5px green;
+}
+.button-style:hover{
+    scale: 110%;
+}

@@ -1,0 +1,44 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.image{
+    box-shadow: 10px 10px 10px rgb(70, 67, 67);
+    background-size: cover;
+    background-position: center;
+}
+
+.text{
+    margin: auto;
+    color: rgb(80,200,120);
+}
+
+.typing-text{
+    overflow: hidden;
+    white-space: nowrap;
+    /* border-right: 4px solid white; */
+    animation: typing 3s steps(20, end);
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* @keyframes blink-caret {
+    50% { border-color: transparent; }
+} */
+
+/* @keyframes stop-cursor {
+    to { border-color: transparent; } /* Hides the cursor */
+
+
+.button-wrapper{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    gap: 0.6rem;
+}
