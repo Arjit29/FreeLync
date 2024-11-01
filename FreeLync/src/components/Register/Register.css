@@ -23,3 +23,15 @@
     margin-top: 4rem;
     color: rgb(17, 17, 17);
 }
+
+.registerButtonContainer{
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registerButton:hover{
+    scale: 110%;
+    cursor: pointer;
+}
