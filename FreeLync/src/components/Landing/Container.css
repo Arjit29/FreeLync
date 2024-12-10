@@ -20,6 +20,7 @@
     white-space: nowrap;
     /* border-right: 4px solid white; */
     animation: typing 3s steps(20, end);
+    color: rgb(80,200,120);
 }
 
 @keyframes typing {

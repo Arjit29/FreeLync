@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./SignIn.css";
 import Input from "./Input.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn(){
     const [formData,setFormData] = useState({
@@ -9,6 +10,7 @@ export default function SignIn(){
     })
     const [err,setErr] = useState("");
     const [success,setSuccess] = useState("");
+    const navigate = useNavigate();
     const handleChange = (field,value)=>{
         setFormData((prevData)=>({...prevData,[field]: value}));
     }
@@ -26,7 +28,9 @@ export default function SignIn(){
             });
             const data = await response.json();
             if(response.ok){
+                localStorage.setItem("token",data.token);
                 setSuccess(data.message);
+                navigate("/dashboard");
             }
             else{
                 setErr(data.error);

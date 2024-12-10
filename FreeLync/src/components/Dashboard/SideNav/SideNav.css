@@ -1,0 +1,29 @@
+.navcontainer{
+    background-color: rgb(229,244,227);
+    height: 100vh;
+    width: 20%;
+}
+
+.navLinks{
+    margin-top: 5rem;
+    
+}
+
+.navlogoImg{
+    background: url("/images/logo.jpg");
+    height: 4rem;
+    width: 4rem;
+    background-size: cover;
+    border-radius: 50%;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.link-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    font-size: large;
+    color: black;
+}

@@ -30,8 +30,19 @@ app.post("/register",async (req,res)=>{
             return res.status(400).json({error: "User already exist"});
         }
         const newUser = new User({firstname,lastname,email,address,password,usertype});
-        await newUser.save();
-        res.status(201).json({message: "User registered successfully"});
+        if(newUser){
+            await newUser.save();
+            const token = jwt.sign(
+                {
+                id: newUser._id, email: newUser.email
+                },
+                process.env.JWT_SECRET,
+                {expiresIn: "1hr"}
+            )
+            res.status(201).json({message: "User registered successfully",token});
+        }
+        
+        
     }
     catch(err){
         console.error("Error registering user",err);
