@@ -28,6 +28,29 @@ const userSchema = new Schema({
         type: String,
         enum: ["FreeLancer","Want to Hire"],
         required: true
+    },
+    ongoingProjects: {
+        type: Number,
+        default: 0
+    },
+    completedProjects: {
+        type: Number,
+        default: 0
+    },
+    compByMonth: {
+        type: Map,
+        of: Number,
+        default: {}
+    },
+    rev: {
+        type: Map,
+        of: Number,
+        default: {}
+    },
+    earningByMonth: {
+        type: Map,
+        of: Number,
+        default: {}
     }
 })
 

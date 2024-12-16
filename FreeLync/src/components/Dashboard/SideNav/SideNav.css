@@ -2,8 +2,13 @@
     background-color: rgb(229,244,227);
     height: 100vh;
     width: 20%;
+    position: fixed;
 }
-
+.navLogo{
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+}
 .navLinks{
     margin-top: 5rem;
     
@@ -23,7 +28,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 70px;
+    height: 60px;
     font-size: large;
     color: black;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+}
+
+.link-text:hover{
+    background-color: rgb(148, 244, 135);
+    cursor: pointer;
+    /* scale: 105%; */
+}
+
+.link-text:hover .innertext{
+    scale: 110%;
 }

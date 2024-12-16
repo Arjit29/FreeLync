@@ -1,0 +1,25 @@
+.each-card{
+    height: 270px;
+    width: 500px;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: 8px 8px 5px rgba(0, 0, 0, 0.234);
+}
+
+.card-head{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+    font-size: large;
+    font-weight: bold;
+    color: rgb(0,76,0);
+    margin-bottom: 1rem;
+
+}
+
+.card-chart{
+    display: flex;
+    justify-content: center;
+    height: 200px;
+}

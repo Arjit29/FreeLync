@@ -1,13 +1,13 @@
 import React from "react";
-import SideNav from "./SideNav/SideNav.jsx";
-import Area from "./Area/Area.jsx";
+import SideNav from "../Dashboard/SideNav/SideNav.jsx";
+// import Button from "./Button.jsx";
 
-export default function Dashboard(){
+export default function Projects(){
     return(
         <>
         <div className="dashboard" style={{display: "flex"}}>
             <SideNav/>
-            <Area/>
+            {/* <Button/> */}
         </div>
         </>
     )

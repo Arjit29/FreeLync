@@ -39,8 +39,14 @@ export default function Register(){
             const data = await response.json();
             if(response.ok){
                 localStorage.setItem("token",data.token);
+                const decodedToken = JSON.parse(atob(data.token.split(".")[1]));
+                const usertype = decodedToken.usertype;
                 setSuccess(data.message);
-                navigate("/dashboard");
+                if(usertype === "FreeLancer") {
+                    navigate("/freelancer-dashboard");
+                }else if (usertype === "Want to Hire") {
+                    navigate("/hirer-dashboard");
+                }
             }
             else{
                 setErr(data.error);
