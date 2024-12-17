@@ -16,15 +16,15 @@ export default function PieChart() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/active-projects-data/${userId}`);
+                const response = await fetch(`http://localhost:3000/projects-data/${userId}`);
                 const data = await response.json();
                 if (response.ok) {
                     setChartData({
-                        labels: ["Ongoing", "Completed"],
+                        labels: [`Ongoing: ${data.ongoing}`, `Completed: ${data.completed}`],
                         datasets: [
                             {
                                 data: [data.ongoing || 0, data.completed || 0],
-                                backgroundColor: ["#36A2EB", "#FF6384"],
+                                backgroundColor: ["#F6A417", "#EB5F1A"],
                             },
                         ],
                     });
