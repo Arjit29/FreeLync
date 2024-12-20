@@ -7,9 +7,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 import Landing from './components/Landing/Landing.jsx'
 import Register from './components/Register/Register.jsx'
 import SignIn from './components/SignIn/SignIn.jsx'
-import Dashboard from './components/Dashboard/Dashboard.jsx'
+import Dashboard from './components/freelancer/Dashboard/Dashboard.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import Projects from './components/Projects/Projects.jsx'
+import UserDashboard from './components/hirer/UserDashboard/UserDashboard.jsx'
+import Explore from './components/freelancer/Explore/Explore.jsx';
+import Project from './components/hirer/Project/Project.jsx';
+import Projform from './components/hirer/Project/Projform.jsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +35,34 @@ const router = createBrowserRouter([
       <Dashboard/>
     </ProtectedRoute>
     )
+  },
+  {
+    path: "/hirer-dashboard",
+    element: (
+    <ProtectedRoute>
+      <UserDashboard/>
+    </ProtectedRoute>
+    )
+  },
+  {
+    path: "/freelancer-explore",
+    element: (
+      <ProtectedRoute>
+        <Explore/>
+      </ProtectedRoute>
+      )
+  },
+  {
+    path: "/hirer-projects",
+    element: (
+      <ProtectedRoute>
+        <Project/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/postnewjob",
+    element: <Projform/>
   },
   {
     path: "/freelancer-projects",

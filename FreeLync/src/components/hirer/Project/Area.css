@@ -1,0 +1,67 @@
+.projectArea {
+    margin-left: 20%; 
+    height: 100vh; 
+    background-image: url('images/hirerproject.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.newproj{
+    padding-top: 12rem;
+    padding-left: 3rem;
+    
+}
+
+.projbtn{
+    height: 2.5rem;
+    padding: 0.5rem;
+    font-size: medium;
+    border-radius: 10px;
+    border: none;
+    color: rgb(0, 76, 0);
+    font-weight: bold;
+    background-color: rgb(191, 249, 184);
+    box-shadow: 5px 5px 5px grey;
+}
+
+.projbtn:hover{
+    scale: 110%;
+    cursor: pointer;
+}
+
+/* .projectArea {
+    padding: 1rem;
+}
+
+.newproj {
+    margin-bottom: 1rem;
+} */
+
+.projectsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    margin-top: 5rem;
+    margin-left: 5%;
+}
+
+.projectCard {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 40%;
+    height: 300px;
+    /* width: calc(33.33% - 4rem); */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.statusTab{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: green;
+    font-size: large;
+    font-weight: bold;
+    margin-top: 1rem;
+}

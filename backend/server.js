@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./models/user.js");
+const Project = require("./models/project.js");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -134,6 +135,58 @@ app.get("/projects-data/:userId", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+app.post("/create-project",async(req,res)=>{
+    const {userId, title, description, price} = req.body;
+    try{
+        console.log(title);
+        console.log(description);
+        console.log(price);
+        console.log(userId);
+        if (!title || !description || !price || !userId) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        const user = await User.findById(userId);
+        if (!user || user.usertype !== "Want to Hire") {
+            return res.status(403).json({ error: "User not authorized to post" });
+        }
+        const project = new Project({
+            title: title,
+            description: description,
+            price: price,
+            postedBy: userId
+        })
+        await project.save();
+        user.projectPosted.push(project._id);
+        await user.save();
+        res.status(200).json({message: "Project posted successfully",project});
+    }
+    catch(error){
+        res.status(500).json({error: "Server error while posting project"});
+    }
+})
+
+app.get("/hirer-explore-project/:userId",async(req,res)=>{
+    const {userId} = req.params;
+    try{
+        const project = await Project.find({postedBy: userId}).populate("postedBy","firstname lastname");
+        res.status(200).json(project);
+    }
+    catch(error){
+        res.status(500).json({error: "Server error in fetching projects"});
+    }
+})
+
+app.get("/freelancer-explore-project",async(req,res)=>{
+    try{
+        const project = await Project.find().populate("postedBy","firstname lastname");
+        res.status(200).json(project);
+    }
+    catch(error){
+        res.status(500).json({error: "Server error in fetching projects"});
+    }
+})
 
 
 // app.get("/",(req,res)=>{

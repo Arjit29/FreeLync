@@ -1,0 +1,7 @@
+.ExploreprojectsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    padding-top: 5rem;
+    margin-left: 5%;
+}

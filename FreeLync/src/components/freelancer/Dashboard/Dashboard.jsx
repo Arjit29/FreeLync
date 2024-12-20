@@ -1,5 +1,5 @@
 import React from "react";
-import SideNav from "./SideNav/SideNav.jsx";
+import SideNav from "../SideNav/SideNav.jsx";
 import Area from "./Area/Area.jsx";
 
 export default function Dashboard(){

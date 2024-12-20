@@ -51,7 +51,13 @@ const userSchema = new Schema({
         type: Map,
         of: Number,
         default: {}
-    }
+    },
+    projectPosted: [{
+        type: mongoose.Schema.Types.ObjectId, ref: "Project"
+    }],
+    projectAccepted: [{
+        type: mongoose.Schema.Types.ObjectId, ref: "Project"
+    }]
 })
 
 userSchema.pre("save",async function(next){
