@@ -6,12 +6,13 @@ export default function Area() {
     const [projectData,setProjectData] = useState([]);
     const token = localStorage.getItem("token");
     const userId = JSON.parse(atob(token.split('.')[1])).id;
+    console.log(userId);
     useEffect(()=>{
         fetchProjects();
     },[])
     const fetchProjects = async()=>{
         try{
-            const response = await fetch(`http://localhost:3000/hirer-explore-project/:${userId}`);
+            const response = await fetch(`http://localhost:3000/hirer-explore-project/${userId}`);
             const data = await response.json();
             setProjectData(data);
         }
@@ -26,16 +27,20 @@ export default function Area() {
             </div>
 
             <div className="projectsList">
-                {projectData.map((project) => (
-                    <div key={project._id} className="projectCard">
-                        <h3 style={{display: "flex", justifyContent: "center", marginBottom: "1.5rem"}}>{project.title}</h3>
-                        <p style={{marginBottom: "1.5rem"}}>{project.description}</p>
-                        <p style={{marginBottom: "1rem"}}><strong>WorkPay:</strong> {project.price}</p>
-                        {/* <p><strong>Posted By:</strong> {project.postedBy?.firstname} {project.postedBy?.lastname}</p> */}
-                        <p className="statusTab">{project.status}</p>
-                    </div>
-                ))}
+                {projectData.length > 0 ? (
+                    projectData.map((project) => (
+                        <div key={project._id} className="projectCard">
+                            <h3 style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>{project.title}</h3>
+                            <p style={{ marginBottom: "1.5rem" }}>{project.description}</p>
+                            <p style={{ marginBottom: "1rem" }}><strong>WorkPay:</strong> {project.price}</p>
+                            <p className="statusTab">{project.status}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No projects available</p>
+                )}
             </div>
+
         </div>
     );
 }

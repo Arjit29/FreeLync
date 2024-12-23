@@ -188,6 +188,36 @@ app.get("/freelancer-explore-project",async(req,res)=>{
     }
 })
 
+app.patch("/freelancer-seize-project/:projectId",async(req,res)=>{
+    const {projectId} = req.params;
+    const {userId} = req.body;
+    try{
+        const updateProj = await Project.findByIdAndUpdate(projectId,{
+            status: "ongoing",
+            acceptedBy: userId
+        })
+        if(!updateProj){
+            return res.status(400).json({error: "Project not updated in Schema"});
+        }
+        const updateUser = await User.findByIdAndUpdate(userId, {
+            $inc: {ongoingProjects: 1},
+            $push: { projectAccepted: projectId },
+        })
+        if(!updateUser){
+            return res.status(400).json({error: "User not updated in Schema"});
+        }
+        res.status(200).json({
+            project: updateProj,
+            user: {
+                ongoingProjects: updateUser.ongoingProjects,
+            },
+        });
+    } 
+    catch(error){
+        res.status(500).json({error: "Error updating project"});
+    }
+})
+
 
 // app.get("/",(req,res)=>{
 //     res.send("Hello");

@@ -9,11 +9,12 @@ import Register from './components/Register/Register.jsx'
 import SignIn from './components/SignIn/SignIn.jsx'
 import Dashboard from './components/freelancer/Dashboard/Dashboard.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
-import Projects from './components/Projects/Projects.jsx'
+// import Projects from './components/Projects/Projects.jsx'
 import UserDashboard from './components/hirer/UserDashboard/UserDashboard.jsx'
 import Explore from './components/freelancer/Explore/Explore.jsx';
 import Project from './components/hirer/Project/Project.jsx';
 import Projform from './components/hirer/Project/Projform.jsx';
+import FreeLancerProject from './components/freelancer/FreeLancerProj/FreeLancerProj.jsx';
 
 const router = createBrowserRouter([
   {
@@ -66,7 +67,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/freelancer-projects",
-    element: <Projects/>
+    element: <FreeLancerProject/>
   }
 ])
 

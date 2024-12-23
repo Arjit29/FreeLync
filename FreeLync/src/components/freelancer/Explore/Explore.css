@@ -5,3 +5,63 @@
     padding-top: 5rem;
     margin-left: 5%;
 }
+
+.top-explore{
+    background-color: #BFF9B8;
+    height: 300px;
+    width: 60%;
+    border-radius: 10px;
+    /* padding-top: 2rem; */
+    margin-left: 4%;
+    display: flex;
+}
+
+.left-top-explore{
+    width: 40%;
+}
+
+.intro-explore{
+    margin-left: 1.8rem;
+    color: #3F2E42;
+    margin-top: 3rem;
+    text-align: justify;
+    font-size: large;
+}
+
+.right-top-explore{
+    margin-top: 0.3rem;
+    margin-left: 10rem;
+    background: url('/images/explore-cartoon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 40%;
+
+}
+
+.freelancerProjectArea{
+    margin-left: 20%;
+    /* background-color: #ede3f8; */
+    padding-top: 2rem;
+}
+
+.siezeBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .exploreCartoon{
+    display: flex;
+    height: 300px;
+    width: 100%;
+
+}
+
+.cartoonImg{
+    background: url("/images/explore-cartoon.png");
+    background-size: cover;
+    height: 250px;
+    width: 30%;
+    margin: auto;
+} */
