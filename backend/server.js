@@ -2,9 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./models/user.js");
 const Project = require("./models/project.js");
+const Chat = require("./models/chat.js");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 require("dotenv").config();
 
 const app = express();
@@ -217,6 +219,128 @@ app.patch("/freelancer-seize-project/:projectId",async(req,res)=>{
         res.status(500).json({error: "Error updating project"});
     }
 })
+
+app.patch("/freelancer-complete-project/:projectId", async (req, res) => {
+    const { projectId } = req.params;
+    const { userId } = req.body;
+
+    console.log("Received Project ID:", projectId);
+    console.log("Received User ID:", userId);
+
+    try {
+        const project = await Project.findById(projectId);
+        if (!project) {
+            console.error("Project not found");
+            return res.status(404).json({ error: "Project not found" });
+        }
+        console.log("Found Project:", project);
+
+        const projectPrice = project.price;
+        const currentMonth = moment().format("MMMM");
+        const updateProj = await Project.findByIdAndUpdate(projectId, {
+            status: "completed",
+        });
+        if (!updateProj) {
+            console.error("Failed to update project");
+            return res.status(400).json({ error: "Project not updated in Schema" });
+        }
+        console.log("Updated Project:", updateProj);
+
+        const updateUser = await User.findByIdAndUpdate(userId, {
+            $inc: {
+                completedProjects: 1,
+                [`earningByMonth.${currentMonth}`]: projectPrice,
+            },
+            $set: {
+                [`compByMonth.${currentMonth}`]:
+                    ((await User.findById(userId)).compByMonth?.[currentMonth] || 0) + 1,
+            },
+        });
+        if (!updateUser) {
+            console.error("Failed to update user");
+            return res.status(400).json({ error: "User not updated in Schema" });
+        }
+        console.log("Updated User:", updateUser);
+
+        res.status(200).json({
+            project: updateProj,
+            user: {
+                completedProjects: updateUser.completedProjects,
+                earningByMonth: updateUser.earningByMonth,
+                compByMonth: updateUser.compByMonth,
+            },
+        });
+    } catch (error) {
+        console.error("Error in server:", error); // Log the actual error
+        res.status(500).json({ error: "Error updating project" });
+    }
+});
+
+app.get("/getusers/:userId",async(req,res)=>{
+    const {userId} = req.params;
+    try{
+        const users = await User.find({_id:{$ne: userId}},"_id firstname lastname usertype");
+        res.status(200).json(users);
+    }
+    catch(error){
+        res.status(500).json({error: 'Server Error fetching users'});
+    }
+})
+
+app.get("/getchats/:userId/:receiverId",async(req,res)=>{
+    const {userId,receiverId} = req.params;
+    try{
+        const chat = await Chat.findOne({
+            participants: {$all: [userId,receiverId]}
+        }).populate("messages.sender","firstname lastname");
+    
+        if(!chat){
+            chat = new Chat({
+                paricipants: [userId,receiverId],
+                messages: []
+            });
+            await chat.save();
+        }
+        res.status(200).json(chat);
+    }
+    catch(error){
+        res.status(500).json({error: "Error fetching Chat"});
+    }
+
+})
+
+app.get("/chat/:chatId",async(req,res)=>{
+    const {chatId} = req.params;
+    try{
+        const chat = await Chat.findById(chatId).populate("messages.sender","firstname lastname");
+        if(!chat){
+            return res.status(404).json({error: "Chat not found"});
+        }
+        res.status(200).json(chat);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching chat" });
+    }
+})
+
+app.post("/chat/:chatId/message", async (req, res) => {
+    const { chatId } = req.params;
+    const { senderId, text } = req.body;
+
+    try {
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).json({ error: "Chat not found" });
+        }
+
+        chat.messages.push({ sender: senderId, text });
+        await chat.save();
+
+        res.status(200).json(chat);
+    } catch (error) {
+        res.status(500).json({ error: "Error sending message" });
+    }
+});
+
 
 
 // app.get("/",(req,res)=>{

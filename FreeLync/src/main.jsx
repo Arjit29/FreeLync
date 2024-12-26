@@ -15,6 +15,8 @@ import Explore from './components/freelancer/Explore/Explore.jsx';
 import Project from './components/hirer/Project/Project.jsx';
 import Projform from './components/hirer/Project/Projform.jsx';
 import FreeLancerProject from './components/freelancer/FreeLancerProj/FreeLancerProj.jsx';
+import Messages from './components/freelancer/Messages/Messages.jsx';
+import ChatWindow from './components/freelancer/Messages/Chatwindow/Chatwindow.jsx';
 
 const router = createBrowserRouter([
   {
@@ -67,7 +69,26 @@ const router = createBrowserRouter([
   },
   {
     path: "/freelancer-projects",
-    element: <FreeLancerProject/>
+    element: (
+      <ProtectedRoute>
+        <FreeLancerProject/>
+      </ProtectedRoute>) 
+  },
+  {
+    path: "/freelancer-messages",
+    element: (
+      <ProtectedRoute>
+        <Messages/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/freelancer-chatwindow",
+    element: (
+      <ProtectedRoute>
+        <ChatWindow/>
+      </ProtectedRoute>
+    )
   }
 ])
 
