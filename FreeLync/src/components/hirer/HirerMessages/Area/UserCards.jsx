@@ -30,7 +30,7 @@ export default function UserCards(){
             const response = await fetch(`http://localhost:3000/getchats/${userId}/${receiverId}`);
             const chat = await response.json();
             console.log(chat);
-            navigate(`/freelancer-chatwindow`, { state: { chatId: chat._id, userId: userId } });
+            navigate(`/hirer-chatwindow`, { state: { chatId: chat._id, userId: userId } });
         } catch (error) {
             console.error("Error opening chat", error);
         }

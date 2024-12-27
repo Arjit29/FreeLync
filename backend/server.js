@@ -289,14 +289,15 @@ app.get("/getusers/:userId",async(req,res)=>{
 
 app.get("/getchats/:userId/:receiverId",async(req,res)=>{
     const {userId,receiverId} = req.params;
+    console.log(receiverId);
     try{
-        const chat = await Chat.findOne({
+        let chat = await Chat.findOne({
             participants: {$all: [userId,receiverId]}
         }).populate("messages.sender","firstname lastname");
-    
+        console.log(chat);
         if(!chat){
             chat = new Chat({
-                paricipants: [userId,receiverId],
+                participants: [userId,receiverId],
                 messages: []
             });
             await chat.save();
@@ -311,6 +312,7 @@ app.get("/getchats/:userId/:receiverId",async(req,res)=>{
 
 app.get("/chat/:chatId",async(req,res)=>{
     const {chatId} = req.params;
+    // console.log(chatId);
     try{
         const chat = await Chat.findById(chatId).populate("messages.sender","firstname lastname");
         if(!chat){
@@ -332,10 +334,15 @@ app.post("/chat/:chatId/message", async (req, res) => {
             return res.status(404).json({ error: "Chat not found" });
         }
 
-        chat.messages.push({ sender: senderId, text });
+        chat.messages.push({ sender: senderId, text: text, timestamp: new Date() });
         await chat.save();
 
-        res.status(200).json(chat);
+        const updatedChat = await Chat.findById(chatId).populate(
+            "messages.sender",
+            "firstname lastname"
+        );
+
+        res.status(200).json(updatedChat);
     } catch (error) {
         res.status(500).json({ error: "Error sending message" });
     }

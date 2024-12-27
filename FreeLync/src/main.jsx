@@ -17,6 +17,7 @@ import Projform from './components/hirer/Project/Projform.jsx';
 import FreeLancerProject from './components/freelancer/FreeLancerProj/FreeLancerProj.jsx';
 import Messages from './components/freelancer/Messages/Messages.jsx';
 import ChatWindow from './components/freelancer/Messages/Chatwindow/Chatwindow.jsx';
+import HirerMessages from './components/hirer/HirerMessages/HirerMessages.jsx';
 
 const router = createBrowserRouter([
   {
@@ -89,7 +90,23 @@ const router = createBrowserRouter([
         <ChatWindow/>
       </ProtectedRoute>
     )
-  }
+  },
+  {
+    path: "/hirer-messages",
+    element: (
+      <ProtectedRoute>
+        <HirerMessages/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/hirer-chatwindow",
+    element: (
+      <ProtectedRoute>
+        <ChatWindow/>
+      </ProtectedRoute>
+    )
+  },
 ])
 
 createRoot(document.getElementById('root')).render(
