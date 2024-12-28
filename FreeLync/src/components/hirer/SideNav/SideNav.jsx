@@ -23,7 +23,7 @@ export default function SideNav(){
             <div className="navLinks">
                 <Link to="/hirer-profile" style={{textDecoration: "none"}}> <SideLink linkname="Profile"/> </Link>
                 <Link to="/hirer-dashboard" style={{textDecoration: "none"}}> <SideLink linkname="Dashboard"/> </Link>
-                <Link to="/hirer-explore" style={{textDecoration: "none"}}> <SideLink linkname="Explore"/> </Link>
+                {/* <Link to="/hirer-explore" style={{textDecoration: "none"}}> <SideLink linkname="Explore"/> </Link> */}
                 <Link to="/hirer-messages" style={{textDecoration: "none"}}> <SideLink linkname="Messages"/> </Link>
                 <Link to="/hirer-projects" style={{textDecoration: "none"}}> <SideLink linkname="Projects"/> </Link>
                 <span onClick={handleLogOut}><SideLink linkname="Logout"/></span>

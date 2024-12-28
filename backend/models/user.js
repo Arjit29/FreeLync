@@ -33,6 +33,10 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
+    openProjects: {
+        type: Number,
+        default: 0
+    },
     completedProjects: {
         type: Number,
         default: 0
@@ -48,6 +52,11 @@ const userSchema = new Schema({
         default: {}
     },
     earningByMonth: {
+        type: Map,
+        of: Number,
+        default: {}
+    },
+    expenseByMonth: {
         type: Map,
         of: Number,
         default: {}

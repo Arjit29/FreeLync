@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import "./Chatwindow.css"
 import SideNav from "../../SideNav/SideNav";
 
-export default function ChatWindow() {
+export default function HirerChatWindow() {
     const location = useLocation();
     const { chatId, userId } = location.state;
     const [messages, setMessages] = useState([]);

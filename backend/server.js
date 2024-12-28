@@ -157,10 +157,14 @@ app.post("/create-project",async(req,res)=>{
             title: title,
             description: description,
             price: price,
-            postedBy: userId
+            postedBy: userId,
         })
         await project.save();
         user.projectPosted.push(project._id);
+        const updatedUser = await User.findByIdAndUpdate(userId,{
+            $inc: {openProjects: 1}
+        })
+        await updatedUser.save();
         await user.save();
         res.status(200).json({message: "Project posted successfully",project});
     }
@@ -194,6 +198,8 @@ app.patch("/freelancer-seize-project/:projectId",async(req,res)=>{
     const {projectId} = req.params;
     const {userId} = req.body;
     try{
+        const proj = await Project.findById(projectId);
+        const ownerId = proj.postedBy;
         const updateProj = await Project.findByIdAndUpdate(projectId,{
             status: "ongoing",
             acceptedBy: userId
@@ -207,6 +213,12 @@ app.patch("/freelancer-seize-project/:projectId",async(req,res)=>{
         })
         if(!updateUser){
             return res.status(400).json({error: "User not updated in Schema"});
+        }
+        const updateOwner = await User.findByIdAndUpdate(ownerId, {
+            $inc: { openProjects: -1 , ongoingProjects: 1},
+        });
+        if (!updateOwner) {
+            return res.status(400).json({ error: "Owner not updated in Schema" });
         }
         res.status(200).json({
             project: updateProj,
@@ -234,6 +246,7 @@ app.patch("/freelancer-complete-project/:projectId", async (req, res) => {
             return res.status(404).json({ error: "Project not found" });
         }
         console.log("Found Project:", project);
+        const ownerId = project.postedBy;
 
         const projectPrice = project.price;
         const currentMonth = moment().format("MMMM");
@@ -261,6 +274,17 @@ app.patch("/freelancer-complete-project/:projectId", async (req, res) => {
             return res.status(400).json({ error: "User not updated in Schema" });
         }
         console.log("Updated User:", updateUser);
+
+        const updateOwner = await User.findByIdAndUpdate(ownerId, {
+            $inc: { completedProjects: 1 , ongoingProjects: -1, [`expenseByMonth.${currentMonth}`]: projectPrice},
+            $set: {
+                [`compByMonth.${currentMonth}`]:
+                    ((await User.findById(ownerId)).compByMonth?.[currentMonth] || 0) + 1,
+            },
+        });
+        if (!updateOwner) {
+            return res.status(400).json({ error: "Owner not updated in Schema" });
+        }
 
         res.status(200).json({
             project: updateProj,
@@ -345,6 +369,27 @@ app.post("/chat/:chatId/message", async (req, res) => {
         res.status(200).json(updatedChat);
     } catch (error) {
         res.status(500).json({ error: "Error sending message" });
+    }
+});
+
+app.get("/hirer-projects-data/:userId", async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.status(200).json({
+            open: user.openProjects,
+            ongoing: user.ongoingProjects,
+            completed: user.completedProjects,
+            completedByMonth: user.compByMonth || {},
+            expenseByMonth: user.expenseByMonth || {},
+            review: user.rev || {}
+        });
+    } catch (error) {
+        console.error("Error fetching projects data:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 

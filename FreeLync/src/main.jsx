@@ -18,6 +18,7 @@ import FreeLancerProject from './components/freelancer/FreeLancerProj/FreeLancer
 import Messages from './components/freelancer/Messages/Messages.jsx';
 import ChatWindow from './components/freelancer/Messages/Chatwindow/Chatwindow.jsx';
 import HirerMessages from './components/hirer/HirerMessages/HirerMessages.jsx';
+import HirerChatWindow from './components/hirer/HirerMessages/HirerChatwindow/HirerChatwindow.jsx';
 
 const router = createBrowserRouter([
   {
@@ -103,7 +104,7 @@ const router = createBrowserRouter([
     path: "/hirer-chatwindow",
     element: (
       <ProtectedRoute>
-        <ChatWindow/>
+        <HirerChatWindow/>
       </ProtectedRoute>
     )
   },
