@@ -19,6 +19,7 @@ import Messages from './components/freelancer/Messages/Messages.jsx';
 import ChatWindow from './components/freelancer/Messages/Chatwindow/Chatwindow.jsx';
 import HirerMessages from './components/hirer/HirerMessages/HirerMessages.jsx';
 import HirerChatWindow from './components/hirer/HirerMessages/HirerChatwindow/HirerChatwindow.jsx';
+import Profile from './components/freelancer/Profile/Profile.jsx';
 
 const router = createBrowserRouter([
   {
@@ -108,6 +109,14 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     )
   },
+  {
+    path: "/freelancer-profile",
+    element: (
+      <ProtectedRoute>
+        <Profile/>
+      </ProtectedRoute>
+    )
+  }
 ])
 
 createRoot(document.getElementById('root')).render(

@@ -29,6 +29,10 @@ const userSchema = new Schema({
         enum: ["FreeLancer","Want to Hire"],
         required: true
     },
+    profileLink: {
+        type: String,
+        default: "/images/profileempty.png"
+    },
     ongoingProjects: {
         type: Number,
         default: 0

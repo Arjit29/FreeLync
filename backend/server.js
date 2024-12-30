@@ -7,6 +7,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
+const {upload} = require("./cloudinary.js");
 require("dotenv").config();
 
 const app = express();
@@ -393,7 +394,27 @@ app.get("/hirer-projects-data/:userId", async (req, res) => {
     }
 });
 
-
+app.post("/upload-profile-photo/:userId",upload.single("profilePhoto"),async(req,res)=>{
+    try{
+        const {userId} = req.params;
+        const user = await User.findById(userId);
+        console.log(user);
+        console.log("Cloudinary Config:", {
+            name: process.env.CLOUDINARY_NAME,
+            apiKey: process.env.CLOUDINARY_API_KEY,
+            apiSecret: process.env.CLOUDINARY_API_SECRET,
+        });
+        if(!user){
+            res.status(404).json({error: "User not found"});
+        }
+        user.profileLink = req.file.path;
+        await user.save();
+        res.status(200).json({message: "Profile photo updated", profileLink: user.profileLink});
+    }
+    catch(err){
+        res.status(500).json({error: "Error updating profile photo",err});
+    }
+})
 
 // app.get("/",(req,res)=>{
 //     res.send("Hello");

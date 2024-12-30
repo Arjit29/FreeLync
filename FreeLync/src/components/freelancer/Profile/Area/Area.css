@@ -1,0 +1,31 @@
+.whole-content{
+    width: 83.3%;
+    margin-left: 20%;
+}
+
+.top-profile{
+    background-image: url("/images/profileback.jpg");
+    background-size: cover;
+    /* background-color: rgb(191, 249, 184); */
+    height: 350px;
+    width: 100%;
+    /* margin-left: 20%; */
+    display: flex;
+}
+
+.profile-photo{
+    display: flex;
+    background-image: url("/images/profileempty.png");
+    background-size: cover;
+    height: 150px;
+    margin: auto;
+    border-radius: 50%;
+    width: 150px;
+    margin-top: -6%;
+}
+
+.profile-photo:hover{
+    cursor: pointer;
+    /* background: rgba(94, 94, 94, 0.482); */
+    scale: 105%;
+}
