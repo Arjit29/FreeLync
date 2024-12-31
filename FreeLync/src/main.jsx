@@ -20,6 +20,7 @@ import ChatWindow from './components/freelancer/Messages/Chatwindow/Chatwindow.j
 import HirerMessages from './components/hirer/HirerMessages/HirerMessages.jsx';
 import HirerChatWindow from './components/hirer/HirerMessages/HirerChatwindow/HirerChatwindow.jsx';
 import Profile from './components/freelancer/Profile/Profile.jsx';
+import HirerProfile from './components/hirer/HirerProfile/HirerProfile.jsx';
 
 const router = createBrowserRouter([
   {
@@ -114,6 +115,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Profile/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/hirer-profile",
+    element: (
+      <ProtectedRoute>
+        <HirerProfile/>
       </ProtectedRoute>
     )
   }

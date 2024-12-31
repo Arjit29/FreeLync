@@ -1,6 +1,7 @@
 import React from "react";
 import './Area.css'
 import StatCards from "./StatCards";
+import { Link } from "react-router-dom";
 
 export default function Area(){
     return(
@@ -14,7 +15,7 @@ export default function Area(){
                     <div className="intro">
                     Head over to your profile to view and update your details, track progress, and showcase your achievements. Make your profile truly yours!
                     </div>
-                    <button className="btn-dash">Go now!!</button>
+                    <Link to="/hirer-profile"><button className="btn-dash">Go now!!</button></Link> 
                 </div>
                 <div className="right-top-dash">
 

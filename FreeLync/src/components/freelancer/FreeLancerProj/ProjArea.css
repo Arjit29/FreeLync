@@ -1,12 +1,12 @@
 .projarea{
     margin-left: 20%;
-    background: url("/images/projcut.jpg");
+    /* background: url("/images/projcut.jpg"); */
     background-size: cover;
-    height: 700px;
+    /* height: 700px; */
     width: 80%;
     /* opacity: 50%; */
     background-color: rgb(191, 249, 184);
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .projtitle{
@@ -35,9 +35,13 @@
 }
 
 .projtype{
-    margin-top: 4rem;
+    margin-top: 0.8rem;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-style: italic;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    margin-left: 5%;
 }
 
 
@@ -53,6 +57,25 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color: white;
     overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.completedprojectCard{
+    position: relative;
+    /* display: flex;
+    flex-wrap: wrap; */
+    background-color: rgba(155, 152, 152, 0.5);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 40%;
+    height: 350px;
+    /* width: calc(33.33% - 4rem); */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+    overflow: hidden;
+    
 }
 
 .check-icon {

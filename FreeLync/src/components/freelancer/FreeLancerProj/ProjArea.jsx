@@ -67,8 +67,9 @@ export default function ProjArea() {
                     Take a moment to reflect on the projects you’ve embraced—the passion, effort, and vision you’ve poured into them. Each one is a chance to prove not just your skills but your resilience and determination to make a mark. Let your work tell a story of growth, dedication, and the courage to chase excellence.
                 </p>
             </div>
+            <h3 style={{marginTop: "2rem"}}>Ongoing</h3>
             <div className="projtype">
-                <h3>Ongoing</h3>
+                
                 {ongoingProject.length > 0 ? (
                     ongoingProject.map((project) => (
                         <div key={project._id} className="ongoingprojectCard">
@@ -80,14 +81,15 @@ export default function ProjArea() {
                         </div>
                     ))
                 ) : (
-                    <p>No projects available</p>
+                    <p style={{marginBottom: "2rem"}}>No projects available</p>
                 )}
             </div>
+            <h3>Completed</h3>
             <div className="projtype">
-                <h3>Completed</h3>
+                
                 {completedProject.length > 0 ? (
                     completedProject.map((project) => (
-                        <div key={project._id} className="ongoingprojectCard">
+                        <div key={project._id} className="completedprojectCard">
                             <h3 style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem", marginTop: "1rem"}}>{project.title}</h3>
                             <p style={{ marginBottom: "1.5rem" }}>{project.description}</p>
                             <p style={{ marginBottom: "1rem" }}><strong>WorkPay:</strong> {project.price}</p>

@@ -90,7 +90,7 @@ export default function Explore(){
                                 <p style={{marginBottom: "1.5rem"}}>{project.description}</p>
                                 <p style={{marginBottom: "1rem"}}><strong>Work Pay:</strong> {project.price}</p>
                                 <p><strong>Posted By:</strong> {project.postedBy?.firstname} {project.postedBy?.lastname}</p>
-                                <p className="statusTab">Status: {project.status}</p>
+                                <p className="statusTab" style={{marginBottom: "1rem"}}>Status: {project.status}</p>
                                 <button className="siezeBtn" onClick={()=>{seizeProject(project._id)}}>Sieze</button>
                         </div>
                     ))}

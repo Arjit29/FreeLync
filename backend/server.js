@@ -62,7 +62,9 @@ app.post("/signIn",async(req,res)=>{
         if(!checkUser){
             res.status(401).json({error: "Incorrect email"});
         }
+        console.log(checkUser.password);
         const checkMatch = await bcrypt.compare(password,checkUser.password);
+        console.log("Password Match:", checkMatch);
         if(!checkMatch){
             res.status(401).json({error: "Incorrect password"});
         }
@@ -415,6 +417,47 @@ app.post("/upload-profile-photo/:userId",upload.single("profilePhoto"),async(req
         res.status(500).json({error: "Error updating profile photo",err});
     }
 })
+
+app.get("/get-user-profile/:userId", async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.status(200).json({ profileLink: user.profileLink, firstName: user.firstname, lastName: user.lastname, intro: user.intro, currentPassword: user.password });
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching user profile", error });
+    }
+});
+
+app.put("/update-change/:userId",async(req,res)=>{
+    try{
+        const {userId} = req.params;
+        const {firstName, lastName, intro, currentPassword, newPassword} = req.body;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        user.firstname = firstName || user.firstname;
+        user.lastname = lastName || user.lastname;
+        user.intro = intro || user.intro;
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: "Current password is incorrect" });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+
+        await user.save();
+        res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Error updating user details", error });
+    }
+})
+
 
 // app.get("/",(req,res)=>{
 //     res.send("Hello");

@@ -11,6 +11,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    intro: {
+        type: String,
+        default: ""
+    },
     email: {
         type: String,
         require: true,
@@ -75,6 +79,11 @@ const userSchema = new Schema({
 
 userSchema.pre("save",async function(next){
     if(!this.isModified("password")){
+        return next();
+    }
+    const rounds = 10; // Default bcrypt rounds
+    const isHashed = this.password.startsWith("$2b$" + rounds.toString().padStart(2, "0"));
+    if (isHashed) {
         return next();
     }
     this.password = await bcrypt.hash(this.password,10);

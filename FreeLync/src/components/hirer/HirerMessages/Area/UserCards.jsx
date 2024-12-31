@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function UserCards(){
+    const [profilePhoto,setProfilePhoto] = useState("/images/profileempty.png");
     const [userData,setUserData] = useState([]);
     const navigate = useNavigate();
     // const [currentChat, setCurrentChat] = useState(null);
@@ -21,8 +22,29 @@ export default function UserCards(){
             }
             
         };
+        const fetchUserProfile = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/get-user-profile/${userId}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`, 
+                    },
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.profileLink) {
+                        setProfilePhoto(data.profileLink);
+                    }
+                } else {
+                    console.error("Failed to fetch user profile");
+                }
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+            }
+        };
     
         fetchUsers();
+        fetchUserProfile();
     }, [userId]);
 
     const openChat = async (receiverId) => {
@@ -41,6 +63,9 @@ export default function UserCards(){
             <div className="user-cards">
                     {userData.map((user) => (
                         <div key={user._id} className="user-card">
+                            <div className="profile-photo-msg" style={{ backgroundImage: `url(${profilePhoto})` }}>
+
+                            </div>
                             <div className="card-head">
                                 {user.firstname} {user.lastname}
                             </div>

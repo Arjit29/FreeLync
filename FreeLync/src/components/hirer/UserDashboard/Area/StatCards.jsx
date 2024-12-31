@@ -10,7 +10,7 @@ export default function StatCards(){
                     <Card name="Completed Projects" content="compByMonth"/>
                 </div>
                 <div className="bottom-cards" style={{display: "flex",gap: "4rem",marginTop: "2rem"}}>
-                    <Card name="Earnings" content="earnByMonth"/>
+                    <Card name="Expenses" content="earnByMonth"/>
                     <Card name="Reviews" content="review"/>
                 </div>
             </div>

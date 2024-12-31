@@ -47,8 +47,18 @@
 
 .siezeBtn{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: auto;
+    font-size: medium;
+    padding: 0.3rem;
+    background-color: #EB4E00;
+    border-radius: 3px;
+    color: white;
+    border: none;
+}
+
+.siezeBtn:hover{
+    cursor: pointer;
+    scale: 105%;
 }
 
 /* .exploreCartoon{
