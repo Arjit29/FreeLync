@@ -16,7 +16,7 @@ export default function Card({name,content}){
                     {content === "active" && <PieChart />}
                     {content === "compByMonth" && <LineChart />}
                     {content === "earnByMonth" && <LineChartEarn />}
-                    {content === "review" && <BarChart />}
+                    {/* {content === "review" && <BarChart />} */}
                 </div>
                 
             </div>

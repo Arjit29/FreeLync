@@ -1,68 +1,59 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto"; // Import Chart.js auto settings
 
 export default function LineChart() {
     const [lineData, setLineData] = useState(null);
-    const chartRef = useRef(null); // Reference for the chart
     const token = localStorage.getItem("token");
 
     if (!token) {
         console.error("Token not found in local storage");
-        return null;
+        return <p>Error: Authentication token missing.</p>;
     }
 
-    const userId = JSON.parse(atob(token.split('.')[1])).id;
+    const userId = JSON.parse(atob(token.split(".")[1])).id;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(`http://localhost:3000/projects-data/${userId}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch chart data.");
+                }
+
                 const data = await response.json();
                 const completedByMonth = data.completedByMonth || {};
 
-                if (response.ok) {
-                    const labels = Object.keys(completedByMonth);
-                    const values = Object.values(completedByMonth);
+                // Ensure months are in chronological order
+                const monthsOrder = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                const sortedData = monthsOrder.map((month) => completedByMonth[month] || 0);
 
-                    setLineData({
-                        labels,
-                        datasets: [
-                            {
-                                label: "Completed Projects",
-                                data: values,
-                                borderColor: "#876FD4",
-                                backgroundColor: "#F2F2F2",
-                                fill: true,
-                                tension: 0.2,
-                            },
-                        ],
-                    });
-                }
+                setLineData({
+                    labels: monthsOrder,
+                    datasets: [
+                        {
+                            label: "Completed Projects",
+                            data: sortedData,
+                            borderColor: "#876FD4",
+                            backgroundColor: "#F2F2F2",
+                            fill: true,
+                            tension: 0.2,
+                        },
+                    ],
+                });
             } catch (error) {
                 console.error("Error fetching chart data:", error);
             }
         };
 
         fetchData();
-
-        // Cleanup function
-        return () => {
-            if (chartRef.current) {
-                // Destroy the existing chart instance
-                const chartInstance = chartRef.current.chartInstance;
-                if (chartInstance) {
-                    chartInstance.destroy();
-                }
-            }
-        };
-    }, [userId]);
+    }, [userId, token]);
 
     if (!lineData) {
         return <p>Loading...</p>;
     }
 
-    return (
-            <Line data={lineData} ref={chartRef} />
-    );
+    return <Line data={lineData} />;
 }

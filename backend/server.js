@@ -8,11 +8,75 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
 const {upload} = require("./cloudinary.js");
+const http = require("http");
+const {Server} = require("socket.io");
 require("dotenv").config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+
+    socket.on("call_user", ({ to, offer }) => {
+        io.to(to).emit("incoming_call", { from: socket.id, offer });
+    });
+
+    socket.on("answer_call", ({ to, answer }) => {
+        io.to(to).emit("call_answered", { from: socket.id, answer });
+    });
+
+    socket.on("ice_candidate", ({ to, candidate }) => {
+        io.to(to).emit("ice_candidate", { from: socket.id, candidate });
+    });
+
+    socket.on("disconnect", () => {
+        console.log("A user disconnected:", socket.id);
+    });
+});
+
+// const io = new Server(server, {
+//     cors: {
+//         origin: "http://localhost:3000", // Allow requests from client
+//         methods: ["GET", "POST"],
+//     },
+// });
+
+// io.on("connection", (socket) => {
+//     console.log("A user connected:", socket.id);
+
+//     // Join a chat room (chatId)
+//     socket.on("join_chat", (chatId) => {
+//         socket.join(chatId);
+//         console.log(`User ${socket.id} joined chat ${chatId}`);
+//     });
+
+//     // Handle new messages
+//     socket.on("send_message", async ({ chatId, senderId, text }) => {
+//         const chat = await Chat.findById(chatId);
+//         if (chat) {
+//             const message = { sender: senderId, text: text, timestamp: new Date() };
+//             chat.messages.push(message);
+//             await chat.save();
+
+//             const populatedMessage = {
+//                 sender: await User.findById(senderId).select("firstname lastname"),
+//                 text,
+//                 timestamp: message.timestamp,
+//             };
+
+//             // Broadcast the message to other users in the chat room
+//             io.to(chatId).emit("receive_message", populatedMessage);
+//         }
+//     });
+
+//     socket.on("disconnect", () => {
+//         console.log("A user disconnected:", socket.id);
+//     });
+// });
 
 const port = 3000;
 main().then((res)=>{
@@ -265,6 +329,7 @@ app.patch("/freelancer-complete-project/:projectId", async (req, res) => {
         const updateUser = await User.findByIdAndUpdate(userId, {
             $inc: {
                 completedProjects: 1,
+                ongoingProjects: -1,
                 [`earningByMonth.${currentMonth}`]: projectPrice,
             },
             $set: {
@@ -306,7 +371,7 @@ app.patch("/freelancer-complete-project/:projectId", async (req, res) => {
 app.get("/getusers/:userId",async(req,res)=>{
     const {userId} = req.params;
     try{
-        const users = await User.find({_id:{$ne: userId}},"_id firstname lastname usertype");
+        const users = await User.find({_id:{$ne: userId}},"_id firstname lastname usertype intro profileLink");
         res.status(200).json(users);
     }
     catch(error){
@@ -401,11 +466,11 @@ app.post("/upload-profile-photo/:userId",upload.single("profilePhoto"),async(req
         const {userId} = req.params;
         const user = await User.findById(userId);
         console.log(user);
-        console.log("Cloudinary Config:", {
-            name: process.env.CLOUDINARY_NAME,
-            apiKey: process.env.CLOUDINARY_API_KEY,
-            apiSecret: process.env.CLOUDINARY_API_SECRET,
-        });
+        // console.log("Cloudinary Config:", {
+        //     name: process.env.CLOUDINARY_NAME,
+        //     apiKey: process.env.CLOUDINARY_API_KEY,
+        //     apiSecret: process.env.CLOUDINARY_API_SECRET,
+        // });
         if(!user){
             res.status(404).json({error: "User not found"});
         }
@@ -457,6 +522,41 @@ app.put("/update-change/:userId",async(req,res)=>{
         res.status(500).json({ error: "Error updating user details", error });
     }
 })
+
+app.post("/rate-freelancer", async (req, res) => {
+    const { projectId, stars } = req.body;
+
+    try {
+        // Find the project by ID
+        const project = await Project.findById(projectId);
+        if (!project) {
+            return res.status(404).json({ message: "Project not found." });
+        }
+
+        // Check if the project has an accepted freelancer
+        const freelancerId = project.acceptedBy;
+        if (!freelancerId) {
+            return res.status(400).json({ message: "No freelancer assigned to this project." });
+        }
+
+        // Find the freelancer by their ID
+        const freelancer = await User.findById(freelancerId);
+        if (!freelancer) {
+            return res.status(404).json({ message: "Freelancer not found." });
+        }
+
+        // Update the star ratings in the freelancer's `rev` field
+        const currentRating = freelancer.rev.get(`${stars}star`) || 0;
+        freelancer.rev.set(`${stars}star`, currentRating + 1);
+
+        await freelancer.save();
+
+        res.status(200).json({ message: "Rating submitted successfully." });
+    } catch (error) {
+        console.error("Error rating freelancer:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
 
 
 // app.get("/",(req,res)=>{

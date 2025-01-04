@@ -71,3 +71,13 @@
     width: 75px;
     margin-top: -6%;
 }
+
+.msgbtn{
+    border-radius: 3px;
+
+}
+
+.msgbtn:hover{
+    cursor: pointer;
+    scale: 110%;
+}

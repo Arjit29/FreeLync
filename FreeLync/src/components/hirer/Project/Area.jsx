@@ -20,6 +20,26 @@ export default function Area() {
             console.error("Error fetching projects",err);
         }
     }
+    const handleStarClick = async (projectId, stars) => {
+        try {
+            const response = await fetch(`http://localhost:3000/rate-freelancer`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ projectId, stars }),
+            });
+            if (response.ok) {
+                alert("Rating submitted successfully!");
+            } else {
+                console.error("Failed to submit rating.");
+            }
+        } catch (err) {
+            console.error("Error submitting rating:", err);
+        }
+    };
+    
     return (
         <div className="projectArea">
             <div className="newproj">
@@ -34,6 +54,19 @@ export default function Area() {
                             <p style={{ marginBottom: "1.5rem" }}>{project.description}</p>
                             <p style={{ marginBottom: "1rem" }}><strong>WorkPay:</strong> {project.price}</p>
                             <p className="statusTab">{project.status}</p>
+                            {project.status === "completed" && (
+                                <div className="starRating">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <span
+                                            key={star}
+                                            className="star"
+                                            onClick={() => handleStarClick(project._id, star)}
+                                        >
+                                            ⭐
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     ))
                 ) : (

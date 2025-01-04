@@ -57,3 +57,14 @@
     color: rgb(0,76,0);
     margin-bottom: 1rem;
 }
+
+.profile-photo-msg{
+    display: flex;
+    /* background-image: url("/images/profileempty.png"); */
+    background-size: cover;
+    height: 75px;
+    margin: auto;
+    border-radius: 50%;
+    width: 75px;
+    margin-top: -6%;
+}

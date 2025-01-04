@@ -1,3 +1,4 @@
+window.global = window;
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -18,9 +19,10 @@ import FreeLancerProject from './components/freelancer/FreeLancerProj/FreeLancer
 import Messages from './components/freelancer/Messages/Messages.jsx';
 import ChatWindow from './components/freelancer/Messages/Chatwindow/Chatwindow.jsx';
 import HirerMessages from './components/hirer/HirerMessages/HirerMessages.jsx';
-import HirerChatWindow from './components/hirer/HirerMessages/HirerChatwindow/HirerChatwindow.jsx';
+import HirerChatWindow from './components/hirer/HirerMessages/HirerChatwindow/HirerChatWindow.jsx';
 import Profile from './components/freelancer/Profile/Profile.jsx';
 import HirerProfile from './components/hirer/HirerProfile/HirerProfile.jsx';
+import VideoCall from './components/freelancer/Messages/Area/VideoCall.jsx';
 
 const router = createBrowserRouter([
   {
@@ -123,6 +125,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <HirerProfile/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/video-call",
+    element: (
+      <ProtectedRoute>
+        <VideoCall/>
       </ProtectedRoute>
     )
   }

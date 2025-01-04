@@ -11,7 +11,7 @@ export default function StatCards(){
                 </div>
                 <div className="bottom-cards" style={{display: "flex",gap: "4rem",marginTop: "2rem"}}>
                     <Card name="Expenses" content="earnByMonth"/>
-                    <Card name="Reviews" content="review"/>
+                    {/* <Card name="Reviews" content="review"/> */}
                 </div>
             </div>
         </>
