@@ -15,7 +15,12 @@ export default function LineChart() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/projects-data/${userId}`);
+                const response = await fetch(`http://localhost:3000/projects-data/${userId}`,
+                    {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+                );
                 if (!response.ok) {
                     throw new Error("Failed to fetch chart data.");
                 }

@@ -14,7 +14,12 @@ export default function UserCards(){
     useEffect(() => {
         const fetchUsers = async () => {
             try{
-                const response = await fetch(`http://localhost:3000/getusers/${userId}`);
+                const response = await fetch(`http://localhost:3000/getusers/${userId}`,
+                    {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+                );
                 const data = await response.json();
                 setUserData(data);
             }
@@ -50,7 +55,12 @@ export default function UserCards(){
 
     const openChat = async (receiverId) => {
         try {
-            const response = await fetch(`http://localhost:3000/getchats/${userId}/${receiverId}`);
+            const response = await fetch(`http://localhost:3000/getchats/${userId}/${receiverId}`,
+                {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+            );
             const chat = await response.json();
             console.log(chat);
             navigate(`/hirer-chatwindow`, { state: { chatId: chat._id, userId: userId } });

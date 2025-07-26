@@ -16,7 +16,12 @@ export default function Explore(){
     },[])
     const fetchProjects = async()=>{
         try{
-            const response = await fetch("http://localhost:3000/freelancer-explore-project");
+            const response = await fetch("http://localhost:3000/freelancer-explore-project",
+                {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+            );
             const data = await response.json();
             // const ongoing = data.filter(project => project.status === "ongoing" && project.acceptedBy === userId);
             const explore = data.filter(project => project.status !== "ongoing");
@@ -32,7 +37,9 @@ export default function Explore(){
             const response = await fetch(`http://localhost:3000/freelancer-seize-project/${projectId}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                    
                 },
                 body: JSON.stringify({ userId }),
             });

@@ -51,6 +51,9 @@ export default function Area(){
             try{
                 const response = await fetch(`http://localhost:3000/upload-profile-photo/${userId}`,{
                     method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
                     body: formData
                 })
                 if(response.ok){

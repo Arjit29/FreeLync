@@ -12,7 +12,12 @@ export default function Area() {
     },[])
     const fetchProjects = async()=>{
         try{
-            const response = await fetch(`http://localhost:3000/hirer-explore-project/${userId}`);
+            const response = await fetch(`http://localhost:3000/hirer-explore-project/${userId}`,
+                {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+            );
             const data = await response.json();
             setProjectData(data);
         }

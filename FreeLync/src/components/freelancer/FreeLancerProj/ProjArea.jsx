@@ -17,7 +17,12 @@ export default function ProjArea() {
     },[])
     const fetchOngoingProjects = async()=>{
         try{
-            const response = await fetch("http://localhost:3000/freelancer-explore-project");
+            const response = await fetch("http://localhost:3000/freelancer-explore-project",
+                {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+            );
             const data = await response.json();
             const ongoing = data.filter(project => project.status === "ongoing" && project.acceptedBy === userId);
             setOngoingProject(ongoing);
@@ -28,7 +33,12 @@ export default function ProjArea() {
     };
     const fetchCompletedProjects = async()=>{
         try{
-            const response = await fetch("http://localhost:3000/freelancer-explore-project");
+            const response = await fetch("http://localhost:3000/freelancer-explore-project",
+                {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+            );
             const data = await response.json();
             const completed = data.filter(project => project.status === "completed" && project.acceptedBy === userId);
             setCompletedProject(completed);
@@ -43,7 +53,8 @@ export default function ProjArea() {
             const response = await fetch(`http://localhost:3000/freelancer-complete-project/${projectId}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}` ,
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ userId }),
             });

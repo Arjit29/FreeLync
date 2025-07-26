@@ -8,12 +8,18 @@ export default function HirerChatWindow() {
     const { chatId, userId } = location.state;
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         const fetchChat = async () => {
             try {
                 console.log(chatId);
-                const response = await fetch(`http://localhost:3000/chat/${chatId}`);
+                const response = await fetch(`http://localhost:3000/chat/${chatId}`,
+                    {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+                );
                 const data = await response.json();
                 setMessages(data.messages || []);
             } catch (error) {
@@ -31,7 +37,9 @@ export default function HirerChatWindow() {
             const response = await fetch(`http://localhost:3000/chat/${chatId}/message`, {
                 method: "POST",
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
+
                 },
                 body: JSON.stringify({ senderId: userId, text: newMessage })
             });

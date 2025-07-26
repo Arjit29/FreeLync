@@ -16,7 +16,12 @@ export default function BarChart() {
     useEffect(() => {
         const fetchReviewData = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/projects-data/${userId}`);
+                const response = await fetch(`http://localhost:3000/projects-data/${userId}`,
+                    {headers: {
+                        Authorization: `Bearer ${token}` 
+                        }
+                    }
+                );
                 const data = await response.json();
                 const rating = data.review || {}; // Adjust key to your backend data
 
