@@ -10,6 +10,7 @@ const moment = require("moment");
 const {upload} = require("./cloudinary.js");
 const http = require("http");
 const {Server} = require("socket.io");
+const authenticateToken = require('./auth.js');
 require("dotenv").config();
 
 const app = express();
@@ -146,7 +147,7 @@ app.post("/signIn",async(req,res)=>{
     }
 })
 
-app.post("/updateCompletedProj",async(req,res)=>{
+app.post("/updateCompletedProj",authenticateToken,async(req,res)=>{
     const {userId} = req.body;
     try{
         const user = await User.findById(userId);
@@ -169,7 +170,7 @@ app.post("/updateCompletedProj",async(req,res)=>{
     }
 })
 
-app.get("/dashboard-data/:userId", async (req, res) => {
+app.get("/dashboard-data/:userId",authenticateToken ,async (req, res) => {
     const { userId } = req.params;
     try {
         const user = await User.findById(userId);
@@ -186,7 +187,7 @@ app.get("/dashboard-data/:userId", async (req, res) => {
     }
 });
 
-app.get("/projects-data/:userId", async (req, res) => {
+app.get("/projects-data/:userId",authenticateToken ,async (req, res) => {
     const { userId } = req.params;
     try {
         const user = await User.findById(userId);
@@ -206,7 +207,7 @@ app.get("/projects-data/:userId", async (req, res) => {
     }
 });
 
-app.post("/create-project",async(req,res)=>{
+app.post("/create-project",authenticateToken,async(req,res)=>{
     const {userId, title, description, price} = req.body;
     try{
         console.log(title);
@@ -241,7 +242,7 @@ app.post("/create-project",async(req,res)=>{
     }
 })
 
-app.get("/hirer-explore-project/:userId",async(req,res)=>{
+app.get("/hirer-explore-project/:userId",authenticateToken,async(req,res)=>{
     const {userId} = req.params;
     try{
         const project = await Project.find({postedBy: userId}).populate("postedBy","firstname lastname");
@@ -252,7 +253,7 @@ app.get("/hirer-explore-project/:userId",async(req,res)=>{
     }
 })
 
-app.get("/freelancer-explore-project",async(req,res)=>{
+app.get("/freelancer-explore-project",authenticateToken,async(req,res)=>{
     try{
         const project = await Project.find().populate("postedBy","firstname lastname");
         res.status(200).json(project);
@@ -262,7 +263,7 @@ app.get("/freelancer-explore-project",async(req,res)=>{
     }
 })
 
-app.patch("/freelancer-seize-project/:projectId",async(req,res)=>{
+app.patch("/freelancer-seize-project/:projectId",authenticateToken,async(req,res)=>{
     const {projectId} = req.params;
     const {userId} = req.body;
     try{
@@ -300,7 +301,7 @@ app.patch("/freelancer-seize-project/:projectId",async(req,res)=>{
     }
 })
 
-app.patch("/freelancer-complete-project/:projectId", async (req, res) => {
+app.patch("/freelancer-complete-project/:projectId", authenticateToken,async (req, res) => {
     const { projectId } = req.params;
     const { userId } = req.body;
 
@@ -369,7 +370,7 @@ app.patch("/freelancer-complete-project/:projectId", async (req, res) => {
     }
 });
 
-app.get("/getusers/:userId",async(req,res)=>{
+app.get("/getusers/:userId",authenticateToken,async(req,res)=>{
     const {userId} = req.params;
     try{
         const users = await User.find({_id:{$ne: userId}},"_id firstname lastname usertype intro profileLink");
@@ -380,7 +381,7 @@ app.get("/getusers/:userId",async(req,res)=>{
     }
 })
 
-app.get("/getchats/:userId/:receiverId",async(req,res)=>{
+app.get("/getchats/:userId/:receiverId",authenticateToken,async(req,res)=>{
     const {userId,receiverId} = req.params;
     console.log(receiverId);
     try{
@@ -403,7 +404,7 @@ app.get("/getchats/:userId/:receiverId",async(req,res)=>{
 
 })
 
-app.get("/chat/:chatId",async(req,res)=>{
+app.get("/chat/:chatId",authenticateToken,async(req,res)=>{
     const {chatId} = req.params;
     // console.log(chatId);
     try{
@@ -417,7 +418,7 @@ app.get("/chat/:chatId",async(req,res)=>{
     }
 })
 
-app.post("/chat/:chatId/message", async (req, res) => {
+app.post("/chat/:chatId/message",authenticateToken ,async (req, res) => {
     const { chatId } = req.params;
     const { senderId, text } = req.body;
 
@@ -441,7 +442,7 @@ app.post("/chat/:chatId/message", async (req, res) => {
     }
 });
 
-app.get("/hirer-projects-data/:userId", async (req, res) => {
+app.get("/hirer-projects-data/:userId",authenticateToken ,async (req, res) => {
     const { userId } = req.params;
     try {
         const user = await User.findById(userId);
@@ -462,7 +463,7 @@ app.get("/hirer-projects-data/:userId", async (req, res) => {
     }
 });
 
-app.post("/upload-profile-photo/:userId",upload.single("profilePhoto"),async(req,res)=>{
+app.post("/upload-profile-photo/:userId",authenticateToken,upload.single("profilePhoto"),async(req,res)=>{
     try{
         const {userId} = req.params;
         const user = await User.findById(userId);
@@ -484,7 +485,7 @@ app.post("/upload-profile-photo/:userId",upload.single("profilePhoto"),async(req
     }
 })
 
-app.get("/get-user-profile/:userId", async (req, res) => {
+app.get("/get-user-profile/:userId", authenticateToken,async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await User.findById(userId);
@@ -497,7 +498,7 @@ app.get("/get-user-profile/:userId", async (req, res) => {
     }
 });
 
-app.put("/update-change/:userId",async(req,res)=>{
+app.put("/update-change/:userId",authenticateToken,async(req,res)=>{
     try{
         const {userId} = req.params;
         const {firstName, lastName, intro, currentPassword, newPassword} = req.body;
@@ -524,7 +525,7 @@ app.put("/update-change/:userId",async(req,res)=>{
     }
 })
 
-app.post("/rate-freelancer", async (req, res) => {
+app.post("/rate-freelancer", authenticateToken,async (req, res) => {
     const { projectId, stars } = req.body;
 
     try {
